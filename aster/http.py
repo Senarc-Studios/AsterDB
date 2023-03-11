@@ -8,6 +8,7 @@ from .errors import (
 )
 
 import aiohttp
+from typing import Optional
 
 class Requests:
     def __init__(self, url: str, private_key: str):
@@ -20,8 +21,8 @@ class Requests:
         self.url = url
         self.private_key = private_key
 
-    async def get(self, database: str, collection: str, query: dict):
-        """Gets a collection.
+    async def fetch(self, database: str, collection: str, query: dict, limit: Optional[int] = 0):
+        """Fetches data with given query.
 
         Args:
             collection (str): The name of the collection.
@@ -40,7 +41,9 @@ class Requests:
                 }
             ) as response:
                 if response.status == 200:
-                    return await response.json()
+                    result: dict = await response.json().get("result")
+                    result[0] if limit == 1 else (result[:limit] if limit != 0 and limit != 1 else result)
+                    return result
 
                 elif response.status == 400:
                     raise BadRequestError("The request was invalid.")
@@ -49,7 +52,7 @@ class Requests:
                     raise PrivateKeyError("The private key is invalid.")
 
                 elif response.status == 404:
-                    raise NotFoundError("The collection or database was not found.")
+                    raise NotFoundError("The query returned no results.")
 
                 elif response.status == 500:
                     raise ServerError("The server encountered an error.")
