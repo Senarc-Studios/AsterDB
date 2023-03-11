@@ -10,9 +10,9 @@ from .errors import (
 import aiohttp
 from typing import Optional
 
-class Requests:
+class HTTPClient:
     def __init__(self, url: str, private_key: str):
-        """Initializes the Requests.
+        """Initializes the HTTPClient.
 
         Args:
             url (str): The URL of the AsterDB Server.
