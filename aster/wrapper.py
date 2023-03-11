@@ -20,7 +20,7 @@ class KeyFile:
         """
         return self.key
 
-class Wrapper:
+class Aster:
     def __init__(self, url: str, private_key: Optional[Union[str, KeyFile]] = None):
         """Initializes the Wrapper.
 
