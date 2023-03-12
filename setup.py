@@ -23,7 +23,7 @@ setup(
 		"Issue tracker": "https://github.com/Senarc-Studios/AsterDB/issues",
 		"Github": "https://github.com/Senarc-Studios/AsterDB"
 	},
-	version="0.1",
+	version="0.0.1",
 	packages=packages,
 	license="MIT",
 	description="HTTP API Wrapper built for MongoDB for the encryption of Data.",
