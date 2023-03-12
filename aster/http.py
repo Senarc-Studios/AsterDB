@@ -10,6 +10,13 @@ from .errors import (
 import aiohttp
 from typing import Optional
 
+RESPONSE_MAP = {
+    400: BadRequestError("Bad Request."),
+    401: PrivateKeyError("The private key is invalid."),
+    404: NotFoundError("The query returned no results."),
+    500: ServerError("The server encountered an error.")
+}
+
 class HTTPClient:
     def __init__(self, url: str, private_key: str):
         """Initializes the HTTPClient.
@@ -45,20 +52,7 @@ class HTTPClient:
                     result[0] if limit == 1 else (result[:limit] if limit != 0 and limit != 1 else result)
                     return result
 
-                elif response.status == 400:
-                    raise BadRequestError("The request was invalid.")
-
-                elif response.status == 401:
-                    raise PrivateKeyError("The private key is invalid.")
-
-                elif response.status == 404:
-                    raise NotFoundError("The query returned no results.")
-
-                elif response.status == 500:
-                    raise ServerError("The server encountered an error.")
-
-                else:
-                    return UnknownError(f"The server encountered an unknown error: HTTP {response.status}")
+                raise RESPONSE_MAP.get(response.status, UnknownError(f"The server encountered an unknown error: HTTP {response.status}"))
 
     async def insert(self, database: str, collection: str, data: dict):
         """Inserts data into a collection.
@@ -81,26 +75,9 @@ class HTTPClient:
                 }
             ) as response:
                 if response.status == 200:
-                    return await response.json()
+                    return await response.json().get("result")
 
-                elif response.status == 400:
-                    if await response.json() == {"error": "duplicate"}:
-                        raise DuplicateError("The data is already in the collection.")
-
-                    else:
-                        raise BadRequestError("The request was invalid.")
-
-                elif response.status == 401:
-                    raise PrivateKeyError("The private key is invalid.")
-
-                elif response.status == 404:
-                    raise NotFoundError("The collection or database was not found.")
-
-                elif response.status == 500:
-                    raise ServerError("The server encountered an error.")
-
-                else:
-                    return UnknownError(f"The server encountered an unknown error: HTTP {response.status}")
+                raise RESPONSE_MAP.get(response.status, UnknownError(f"The server encountered an unknown error: HTTP {response.status}"))
 
     async def update(self, database: str, collection: str, query: dict, data: dict):
         """Updates data in a collection.
@@ -125,19 +102,6 @@ class HTTPClient:
                 }
             ) as response:
                 if response.status == 200:
-                    return await response.json()
+                    return await response.json().get("result")
 
-                elif response.status == 400:
-                    raise BadRequestError("The request was invalid.")
-
-                elif response.status == 401:
-                    raise PrivateKeyError("The private key is invalid.")
-
-                elif response.status == 404:
-                    raise NotFoundError("The collection or database was not found.")
-
-                elif response.status == 500:
-                    raise ServerError("The server encountered an error.")
-
-                else:
-                    return UnknownError(f"The server encountered an unknown error: HTTP {response.status}")
+                raise RESPONSE_MAP.get(response.status, UnknownError(f"The server encountered an unknown error: HTTP {response.status}"))
