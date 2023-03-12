@@ -26,37 +26,40 @@ class Aster:
 
         Args:
             url (str): The URL of the AsterDB Server.
-            private_key (str, key, optional): Private key that is used to encrypt and decrypt data. Defaults to None.
+            private_key (str, KeyFile, optional): Private key that is used to encrypt and decrypt data. Defaults to None.
         """
         self.url = url
         self.private_key = KeyFile().load_key(private_key)
         self.client = Requests(self.url, self.private_key)
 
-    def set_key(self, private_key: Union[str, KeyFile]):
+    def set_key(self, private_key: Union[str, KeyFile]) -> Union[str, KeyFile]:
         """Sets the private key.
 
         Args:
             private_key (str, key): The private key.
         """
         self.private_key = KeyFile().load_key(private_key)
+        return self.private_key
 
-    def set_database(self, database: str):
+    def set_database(self, database: str) -> str:
         """Sets the database.
 
         Args:
             database (str): The database.
         """
         self.database = database
+        return self.database
 
-    def set_collection(self, collection: str):
+    def set_collection(self, collection: str) -> str:
         """Sets the collection.
 
         Args:
             collection (str): The collection.
         """
         self.collection = collection
+        return self.collection
 
-    async def get(self, database: Optional[str], collection: Optional[str], query: dict):
+    async def get(self, database: Optional[str], collection: Optional[str], query: dict) -> dict:
         """Gets a collection.
 
         Args:
@@ -66,4 +69,17 @@ class Aster:
         Returns:
             dict: The query result.
         """
-        return await self.client.get(database, collection, query)
+        return await self.client.fetch(database, collection, query)
+
+    async def insert(self, database: Optional[str], collection: Optional[str], data: dict) -> dict:
+        """Inserts data into a collection.
+
+        Args:
+            database (str, optional): The name of the database.
+            collection (str, optional): The name of the collection.
+            data (dict): The data that should be inserted.
+
+        Returns:
+            dict: The inserted data.
+        """
+        return await self.client.insert(database, collection, data)

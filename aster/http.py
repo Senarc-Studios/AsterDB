@@ -28,7 +28,7 @@ class HTTPClient:
         self.url = url
         self.private_key = private_key
 
-    async def fetch(self, database: str, collection: str, query: dict, limit: Optional[int] = 0):
+    async def fetch(self, database: str, collection: str, query: dict, limit: Optional[int] = 0) -> dict:
         """Fetches data with given query.
 
         Args:
@@ -54,7 +54,7 @@ class HTTPClient:
 
                 raise RESPONSE_MAP.get(response.status, UnknownError(f"The server encountered an unknown error: HTTP {response.status}"))
 
-    async def insert(self, database: str, collection: str, data: dict):
+    async def insert(self, database: str, collection: str, data: dict) -> dict:
         """Inserts data into a collection.
 
         Args:
@@ -79,7 +79,7 @@ class HTTPClient:
 
                 raise RESPONSE_MAP.get(response.status, UnknownError(f"The server encountered an unknown error: HTTP {response.status}"))
 
-    async def update(self, database: str, collection: str, query: dict, data: dict):
+    async def update(self, database: str, collection: str, query: dict, data: dict) -> dict:
         """Updates data in a collection.
 
         Args:
