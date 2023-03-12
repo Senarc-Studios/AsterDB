@@ -6,7 +6,7 @@ README = ""
 with open("requirements.txt") as f:
 	requirements = f.read().splitlines()
 
-with open("README.rst") as f:
+with open("README.md") as f:
 	README = f.read()
 
 packages = [
@@ -28,7 +28,7 @@ setup(
 	license="MIT",
 	description="HTTP API Wrapper built for MongoDB for the encryption of Data.",
 	long_description=README,
-	long_description_content_type="text/x-rst",
+	long_description_content_type="text/markdown",
 	include_package_data=True,
 	install_requires=requirements,
 	python_requires=">=3.7.0",
