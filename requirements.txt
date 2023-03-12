@@ -1,4 +1,1 @@
 cryptography
-fastapi
-dnspython
-pymongo[srv]

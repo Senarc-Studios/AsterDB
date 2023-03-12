@@ -9,6 +9,17 @@ with open("requirements.txt") as f:
 with open("README.md") as f:
 	README = f.read()
 
+extra_require = {
+	"srv": [
+		"fastapi",
+		"uvicorn",
+		"pydantic",
+		"dnspython",
+		"motor",
+		"pymongo[srv]"
+	]
+}
+
 packages = [
 	"aster"
 ]
@@ -31,6 +42,7 @@ setup(
 	long_description_content_type="text/markdown",
 	include_package_data=True,
 	install_requires=requirements,
+	extras_require=extra_require,
 	python_requires=">=3.7.0",
 	classifiers=[
 		"Development Status :: 5 - Production/Stable",
