@@ -33,14 +33,14 @@ $ pip install aster.db[srv]
 ---
 ## Why `aster.db`?
 
-`aster.db` is not it's own Database, but rather runs on top of MongoDB.
+`aster.db` is not its own Database, but rather runs on top of MongoDB.
 The one thing that Aster adds to your MongoDB Database is encryption.
 If someone gets access to the Database, they can't see the contents or data in the Database.
 You can only see the contents if you have a Public Key, and you can only make changes
 that doesn't break the system by encrypting the data with Private Keys.
 
 ### Disclaimer
-(1) Loosing both the Private Key and Public Key might result in redering the Database and it's contents useless;
+(1) Losing both the Private Key and Public Key might result in redering the Database and it's contents useless;
 (2) If your Private Key is lost, you can still retrieve the data with your Public Key;
 (3) If your Public Key is lost, you can simply generate it with your Private Key;
 
