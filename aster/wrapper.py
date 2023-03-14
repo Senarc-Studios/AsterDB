@@ -83,3 +83,64 @@ class Aster:
             dict: The inserted data.
         """
         return await self.client.insert(database, collection, data)
+
+    async def update(self, database: Optional[str], collection: Optional[str], query: dict, data: dict) -> dict:
+        """Updates data in a collection.
+
+        Args:
+            database (str, optional): The name of the database.
+            collection (str, optional): The name of the collection.
+            query (dict): The query that should be used to find the data.
+            data (dict): The data that should be updated.
+
+        Returns:
+            dict: The updated data.
+        """
+        return await self.client.update(database, collection, query, data)
+
+    async def delete(self, database: Optional[str], collection: Optional[str], query: dict) -> dict:
+        """Deletes data in a collection.
+
+        Args:
+            database (str, optional): The name of the database.
+            collection (str, optional): The name of the collection.
+            query (dict): The query that should be used to find the data.
+
+        Returns:
+            dict: The deleted data.
+        """
+        return await self.client.delete(database, collection, query)
+
+    async def create_database(self, database: str) -> dict:
+        """Creates a database.
+
+        Args:
+            database (str): The name of the database.
+        """
+        return await self.client.create_database(database)
+
+    async def create_collection(self, database: str, collection: str) -> dict:
+        """Creates a collection.
+
+        Args:
+            database (str): The name of the database.
+            collection (str): The name of the collection.
+        """
+        return await self.client.create_collection(database, collection)
+
+    async def delete_database(self, database: str):
+        """Deletes a database.
+
+        Args:
+            database (str): The name of the database.
+        """
+        return await self.client.delete_database(database)
+
+    async def delete_collection(self, database: str, collection: str) -> dict:
+        """Deletes a collection.
+
+        Args:
+            database (str): The name of the database.
+            collection (str): The name of the collection.
+        """
+        return await self.client.delete_collection(database, collection)
