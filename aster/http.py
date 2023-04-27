@@ -7,7 +7,7 @@ from .errors import (
     UnknownError
 )
 
-import aiohttp
+import aiohttp # type: ignore
 from typing import Optional
 
 RESPONSE_MAP = {
