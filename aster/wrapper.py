@@ -1,27 +1,11 @@
+from .client import AsterClient
 from .http import Requests
+from .objects import KeyFile, DirectLink
 
 from typing import Union, Optional
 
-class KeyFile:
-    def __init__(self, path: Optional[str] = None):
-        """Initializes the KeyFile.
-
-        Args:
-            path (str): The path to the key file.
-        """
-        with open(path, "r") as file:
-            self.key = file.read()
-
-    def load_key(self) -> str:
-        """Loads the key from the key file.
-
-        Returns:
-            str: The key.
-        """
-        return self.key
-
 class Aster:
-    def __init__(self, url: str, private_key: Optional[Union[str, KeyFile]] = None):
+    def __init__(self, url: Union[str, DirectLink], private_key: Optional[Union[str, KeyFile]] = None):
         """Initializes the Wrapper.
 
         Args:
@@ -30,7 +14,7 @@ class Aster:
         """
         self.url = url
         self.private_key = KeyFile().load_key(private_key)
-        self.client = Requests(self.url, self.private_key)
+        self.client = Requests(self.url, self.private_key) if isinstance(url, str) else AsterClient(self.url, self.private_key)
 
     def set_key(self, private_key: Union[str, KeyFile]) -> Union[str, KeyFile]:
         """Sets the private key.
