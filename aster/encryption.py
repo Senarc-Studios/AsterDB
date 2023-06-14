@@ -6,7 +6,7 @@ from typing import Union, Any
 
 class Encryption:
     def __init__(self, private_key: Union[str, KeyFile]):
-        self.private_key: str = private_key if isinstance(private_key, str) else private_key.read()
+        self.private_key: str = private_key if isinstance(private_key, str) else private_key.key
 
     @staticmethod
     def generate_keys():
