@@ -2,10 +2,9 @@ import base64
 
 from .objects import KeyFile
 
-from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_OAEP
+from cryptography.fernet import Fernet
 
-from typing import Union
+from typing import Union, Any
 
 class Encryption:
     def __init__(self, private_key: Union[str, KeyFile]):
@@ -13,38 +12,13 @@ class Encryption:
 
     @staticmethod
     def generate_keys():
-        modulus_length = 2048
+        key = Fernet.generate_key()
+        return key
 
-        key = RSA.generate(modulus_length)
-        #print (key.exportKey())
+    def encrypt(self, message: Any) -> bytes:
+        encrypted_message: bytes = Fernet(self.private_key).encrypt(message)
+        return encrypted_message
 
-        pub_key = key.publickey()
-        #print (pub_key.exportKey())
-
-        return key, pub_key
-
-    def encrypt_private_key(self, a_message):
-        encryptor = PKCS1_OAEP.new(self.private_key)
-        encrypted_msg = encryptor.encrypt(a_message)
-        print(encrypted_msg)
-        encoded_encrypted_msg = base64.b64encode(encrypted_msg)
-        print(encoded_encrypted_msg)
-        return encoded_encrypted_msg
-
-    def decrypt_public_key(encoded_encrypted_msg):
-        encryptor = PKCS1_OAEP.new(public_key)
-        decoded_encrypted_msg = base64.b64decode(encoded_encrypted_msg)
-        print(decoded_encrypted_msg)
-        decoded_decrypted_msg = encryptor.decrypt(decoded_encrypted_msg)
-        print(decoded_decrypted_msg)
-        return decoded_decrypted_msg
-
-def main():
-    private, public = generate_keys()
-    print (private)
-    message = b'Hello world'
-    encoded = encrypt_private_key(message, public)
-    decrypt_public_key(encoded, private)
-
-if __name__== "__main__":
-    main()
+    def decrypt_public_key(self, encrypted_message: bytes) -> Any:
+        decrypted_message: bytes = Fernet(self.private_key).decrypt(encrypted_message).decode()
+        return decrypted_message
